@@ -11,7 +11,6 @@ function _M.check()
     if auth_key == nil then
         ngx.var.login_uri = login_uri
         ngx.exec("/login")
-        -- ngx.redirect('http://aaaa.shinezone.net.cn:8888/login/')
         return
     end
 
@@ -21,7 +20,7 @@ function _M.check()
 
     -- 获得用户id
     local user_id = load_token.payload.data.user_id
-    ngx.log(ngx.ERR,'user_id--->',user_id)
+    -- ngx.log(ngx.ERR, 'user_id--->', user_id)
     user_info['username'] = load_token.payload.data.username
     user_info['nickname'] = load_token.payload.data.nickname
 
@@ -33,11 +32,11 @@ function _M.check()
     local method = ngx.req.get_method()
 
     -- 根据用户id获取权限列表(从权限系统redis获取)
-    local is_permission =  my_verify.get_verify(user_id,uri,method)
+    local is_permission = my_verify.get_verify(user_id, uri, method)
     if is_permission ~= true then
         -- 第一次没有就先刷新下redis
         my_verify.write_verify(user_id)
-        local is_permission =  my_verify.get_verify(user_id,uri,method)
+        local is_permission = my_verify.get_verify(user_id, uri, method)
         if is_permission ~= true then
             my_verify.write_permission(user_id)
             -- ngx.say('403')
@@ -47,19 +46,19 @@ function _M.check()
         end
     end
 
-    ---- 根据用户id获取权限列表(本地测试redis)
-    --local is_permission =  my_verify.get_permission(user_id,uri)
+    --- - 根据用户id获取权限列表(本地测试redis)
+    -- local is_permission =  my_verify.get_permission(user_id,uri)
     ---- ngx.say('is_permission---> ',is_permission)
-    --if is_permission ~= true then
-    --    -- 第一次没有就先刷新下redis
-    --    my_verify.write_permission(user_id)
-    --    local is_permission =  my_verify.get_permission(user_id,uri)
-    --    if is_permission ~= true then
-    --        my_verify.write_permission(user_id)
-    --        ngx.say('没有权限访问该URI')
-    --        return
-    --    end
-    --end
+    -- if is_permission ~= true then
+    -- -- 第一次没有就先刷新下redis
+    -- my_verify.write_permission(user_id)
+    -- local is_permission =  my_verify.get_permission(user_id,uri)
+    -- if is_permission ~= true then
+    -- my_verify.write_permission(user_id)
+    -- ngx.say('没有权限访问该URI')
+    -- return
+    -- end
+    -- end
 end
 
 return _M

@@ -59,6 +59,10 @@ rewrite_conf = {
                 uri = "/mg",
                 rewrite_upstream = "172.16.0.223:9800"
             },
+            {
+                uri = "/accounts",
+                rewrite_upstream = "172.16.0.223:9800"
+            },
         }
     }
 }

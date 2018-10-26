@@ -44,8 +44,8 @@ end
 
 -- 对接权限系统的redis
 function get_verify(user_id,uri,method)
-    my_verify = my_cache.smembers(user_id..method)
-    all_verify = my_cache.smembers(user_id..'ALL')
+    local my_verify = my_cache.smembers(user_id..method)
+    local all_verify = my_cache.smembers(user_id..'ALL')
 
     for k,v in ipairs(my_verify) do
         --ngx.log(ngx.ERR,'line----->',v)

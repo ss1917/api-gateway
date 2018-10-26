@@ -5,7 +5,7 @@ local uri = ngx.var.uri
 local _M = {}
 function _M.set()
 
-	ngx.log(ngx.ERR, "uri-------->"..uri)
+	--	ngx.log(ngx.ERR, "uri-------->"..uri)
 	if uri == '/nginx-logo.png' or uri == '/poweredby.png' then
 		return
 	end

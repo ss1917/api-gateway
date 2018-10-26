@@ -36,16 +36,16 @@ yum install openresty-resty
 ```
 
 # 二、 修改配置 
-   -  文件 /usr/local/openresty/nginx/conf/nginx.conf
-   - - 修改 resolver 172.16.0.21; 为resolver DNS服务器。
-   - - 修改 lua_code_cache on; 线上环境设置为on
-   - - 修改 server_name  为你的网关域名
-   -  文件 /usr/local/openresty/nginx/lua/configs.lua
-   - - 修改 token_secret 为你的令牌的密钥 和登录JWT 服务的key一致
-   - - 修改 rewrite_cache_url 刷新权限到redis接口  
-   - - rewrite_cache_token  为获取权限的令牌
-   - - login_uri 当token 无效或者过期 跳转的登录页面
-   -  limit_conf 并发 限制默认即可 如有需求下面有详细介绍
+   ##### 文件 /usr/local/openresty/nginx/conf/nginx.conf
+   -  修改 resolver 172.16.0.21; 为resolver DNS服务器。
+   -  修改 lua_code_cache on; 线上环境设置为on
+   -  修改 server_name  为你的网关域名
+   ##### 文件 /usr/local/openresty/nginx/lua/configs.lua
+   - token_secret 为你的令牌的密钥 和登录JWT 服务的key一致
+   - rewrite_cache_url 刷新权限到redis接口  
+   - rewrite_cache_token  为获取权限的令牌
+   - login_uri 当token 无效或者过期 跳转的登录页面
+   - limit_conf 并发 限制默认即可 如有需求下面有详细介绍
    - rewrite_conf 注册API 下面有详解
           
 
@@ -53,7 +53,7 @@ yum install openresty-resty
 # 三、使用配置,注册API
 > 要接入API网关系统，则要先进行注册，注册方式如下：
 
-​	a、配置文件configs.lua中的rewrte_conf
+​	a、配置文件configs.lua中的rewrite_conf
 
 ​	b、POST注册接口(暂无)
 
@@ -61,17 +61,17 @@ yum install openresty-resty
 
 ```lua
 rewrite_conf = {
-	['gw.shinezone.net.cn'] = {
+    ['gw.shinezone.net.cn'] = {
         rewrite_urls = {
-			{
-				uri = "/devops",
-				rewrite_upstream = "devops.shinezone.net.cn"
-			},
             {
-				uri = "/cmdb",
-				rewrite_upstream = "aaaa.shinezone.net.cn:8888"
-			},
-			{
+                uri = "/devops",
+                rewrite_upstream = "devops.shinezone.net.cn"
+            },
+            {
+                uri = "/cmdb",
+                rewrite_upstream = "aaaa.shinezone.net.cn:8888"
+            },
+            {
                 uri = "/mg",
                 rewrite_upstream = "172.16.0.223:9800"
             },
@@ -155,7 +155,7 @@ Failed requests:        985
 在configs.lua文件中配置log地址及redis channel
 
 - get请求日志会访日本地log
-- 非get请求会发送给redis channel
+- 非get请求会发送给redis channel 需要自己接受记录
 
 ```bash
 [root@CentOS7-Shinezone /var/log]#tailf gw.log
