@@ -9,8 +9,8 @@ API网关系统,是基于openresty + Lua开发的一套API网关系统,主要功
 
 
 
-# 一、openresty部署
-
+# 一、服务部署
+#### openresty 编译安装
 ```
 wget https://openresty.org/download/openresty-1.13.6.2.tar.gz
 tar zxf openresty-1.13.6.2.tar.gz && cd openresty-1.13.6.2
@@ -22,23 +22,38 @@ ln -s /usr/local/openresty-1.13.6.2/ /usr/local/openresty
 ln -s /usr/local/openresty/bin/resty /usr/bin/resty
 ```
 
-```
-#yum部署
+####  yum安装
+```bash
+# yum部署
 yum install yum-utils
 yum-config-manager --add-repo
 yum install openresty
 yum install openresty-resty
 ```
+#####  代码部署
+```bash
+\cp -arp api-gateway/* /usr/local/openresty/nginx/
+```
 
-# 二、conf/nginx.conf
-    * 修改 resolver 172.16.0.21; 为resolver DNS服务器。
-    * 修改 lua_code_cache on; 线上环境设置为on
+# 二、 修改配置 
+   -  文件 /usr/local/openresty/nginx/conf/nginx.conf
+   - - 修改 resolver 172.16.0.21; 为resolver DNS服务器。
+   - - 修改 lua_code_cache on; 线上环境设置为on
+   - - 修改 server_name  为你的网关域名
+   -  文件 /usr/local/openresty/nginx/lua/configs.lua
+   - - 修改 token_secret 为你的令牌的密钥 和登录JWT 服务的key一致
+   - - 修改 rewrite_cache_url 刷新权限到redis接口  
+   - - rewrite_cache_token  为获取权限的令牌
+   - - login_uri 当token 无效或者过期 跳转的登录页面
+   -  limit_conf 并发 限制默认即可 如有需求下面有详细介绍
+   - rewrite_conf 注册API 下面有详解
+          
 
 
 # 三、使用配置,注册API
-要接入API网关系统，则要先进行注册，注册方式如下：
+> 要接入API网关系统，则要先进行注册，注册方式如下：
 
-​	a、配置文件config.lua中的rewrte_conf
+​	a、配置文件configs.lua中的rewrte_conf
 
 ​	b、POST注册接口(暂无)
 
@@ -56,7 +71,10 @@ rewrite_conf = {
 				uri = "/cmdb",
 				rewrite_upstream = "aaaa.shinezone.net.cn:8888"
 			},
-
+			{
+                uri = "/mg",
+                rewrite_upstream = "172.16.0.223:9800"
+            },
         }
     }
 }
@@ -64,7 +82,7 @@ rewrite_conf = {
 
 
 
-如上可以看到，注册了2个服务【devops】和【cmdb】
+如上可以看到，注册了的服务【devops】 【cmdb】【mg】
 
 
 
@@ -118,7 +136,7 @@ limit_conf = {
 ab -c 100 -n 1000 http://gw.shinezone.net.cn/devops/api/v1.0/job/
 ```
 
-```shell
+```bash
 Document Path:          /devops/api/v1.0/job/
 Document Length:        245 bytes
 
@@ -139,7 +157,7 @@ Failed requests:        985
 - get请求日志会访日本地log
 - 非get请求会发送给redis channel
 
-```
+```bash
 [root@CentOS7-Shinezone /var/log]#tailf gw.log
 {"time":"2018-09-19 10:44:48","uri":"\/devops\/api\/v1.0\/job\/","login_ip":"172.16.0.121","method":"GET"}
 {"time":"2018-09-19 10:44:48","uri":"\/devops\/api\/v1.0\/job\/","login_ip":"172.16.0.121","method":"GET"}
