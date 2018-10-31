@@ -44,7 +44,7 @@ yum install openresty-resty
    - token_secret 为你的令牌的密钥 和登录JWT 服务的key一致
    - rewrite_cache_url 刷新权限到redis接口  
    - rewrite_cache_token  为获取权限的令牌
-   - login_uri 当token 无效或者过期 跳转的登录页面
+   - login_url 当token 无效或者过期 跳转的登录页面
    - limit_conf 并发 限制默认即可 如有需求下面有详细介绍
    - rewrite_conf 注册API 下面有详解
           

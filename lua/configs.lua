@@ -35,7 +35,7 @@ rewrite_cache_url = 'http://aaaa.shinezone.net.cn:8888/v1/accounts/verify/'
 rewrite_cache_token = '8b888a62-3edb-4920-b446-697a472b4001'
 
 --Login URL
-login_uri = '172.16.80.138:8080/#/login/'
+login_url = '172.16.80.138:8080/#/login/'
 
 --并发限流配置
 limit_conf = {
