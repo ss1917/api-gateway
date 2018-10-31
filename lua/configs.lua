@@ -48,6 +48,10 @@ rewrite_conf = {
     ['gw.shinezone.net.cn'] = {
         rewrite_urls = {
             {
+                uri = "/cron",
+                rewrite_upstream = "172.16.0.223:9900"
+            },
+            {
                 uri = "/mg",
                 rewrite_upstream = "172.16.0.223:9800"
             },

@@ -9,7 +9,7 @@ function _M.check()
     local auth_key = ngx.var.cookie_auth_key
 
     if auth_key == nil then
-        ngx.var.login_uri = login_uri
+        ngx.var.login_url = login_url
         ngx.exec("/login")
         return
     end
