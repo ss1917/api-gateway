@@ -64,15 +64,11 @@ rewrite_conf = {
     ['gw.shinezone.net.cn'] = {
         rewrite_urls = {
             {
-                uri = "/devops",
-                rewrite_upstream = "devops.shinezone.net.cn"
-            },
-            {
-                uri = "/cmdb",
-                rewrite_upstream = "aaaa.shinezone.net.cn:8888"
-            },
-            {
                 uri = "/mg",
+                rewrite_upstream = "172.16.0.223:9800"
+            },
+            {
+                uri = "/accounts",
                 rewrite_upstream = "172.16.0.223:9800"
             },
         }
@@ -103,13 +99,13 @@ rewrite_conf = {
 
 在这里来测试 devops服务的job接口
 
-​	原接口地址：http://devops.shinezone.net.cn/api/v1.0/job/
+​	原接口地址：http://devops.shinezone.net.cn/xxxx/
 
-​	现接口地址：http://gw.shinezone.net.cn/devops/api/v1.0/job/
+​	现接口地址：http://gw.shinezone.net.cn/devops/xxxx/
 
 测试：
 
-​        首次访问 http://gw.shinezone.net.cn/devops/api/v1.0/job/ 跳转到login页面登录
+​        首次访问 http://gw.shinezone.net.cn/devops/xxxx/ 跳转到login页面登录
 
 ​        登录成功,再次访问进行uri鉴权,鉴权成功则如下
 

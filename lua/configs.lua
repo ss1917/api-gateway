@@ -31,7 +31,7 @@ token_secret = "pXFb4i%*834gfdh96(3df&%18iodGq4ODQyMzc4lz7yI6ImF1dG"
 logs_file = '/var/log/gw.log'
 
 --刷新权限到redis接口
-rewrite_cache_url = 'http://aaaa.shinezone.net.cn:8888/v1/accounts/verify/'
+rewrite_cache_url = 'http://172.16.0.223:9800/v2/accounts/verify/'
 rewrite_cache_token = '8b888a62-3edb-4920-b446-697a472b4001'
 
 --Login URL
@@ -47,14 +47,6 @@ limit_conf = {
 rewrite_conf = {
     ['gw.shinezone.net.cn'] = {
         rewrite_urls = {
-            {
-                uri = "/devops",
-                rewrite_upstream = "devops.shinezone.net.cn"
-            },
-            {
-                uri = "/cmdb",
-                rewrite_upstream = "aaaa.shinezone.net.cn:8888"
-            },
             {
                 uri = "/mg",
                 rewrite_upstream = "172.16.0.223:9800"
