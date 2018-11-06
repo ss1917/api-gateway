@@ -64,6 +64,10 @@ rewrite_conf = {
     ['gw.shinezone.net.cn'] = {
         rewrite_urls = {
             {
+                uri = "/cron",
+                rewrite_upstream = "172.16.0.223:9900"
+            },
+            {
                 uri = "/mg",
                 rewrite_upstream = "172.16.0.223:9800"
             },
@@ -78,7 +82,8 @@ rewrite_conf = {
 
 
 
-如上可以看到，注册了的服务【devops】 【cmdb】【mg】
+如上可以看到，注册了的服务【cron】【mg】【accounts】
+accounts 做过处理 不用经过鉴权
 
 
 
@@ -119,30 +124,43 @@ rewrite_conf = {
 
 ```lua
 limit_conf = {
-    rate = 10,   --限制ip每分钟只能调用n*60次接口
-    burst = 5, 	 --桶容量,用于平滑处理,最大接收请求次数
+    rate = 5,   --限制ip每分钟只能调用n*60次接口
+    burst = 10, 	 --桶容量,用于平滑处理,最大接收请求次数
 }
 ```
 
-次配置为每秒10个并发请求，并临时允许超出5个请求并平滑处理掉：
+次配置为每秒5个并发请求，并临时允许超出10个请求并平滑处理掉：
 
-测试：
+测试：（最好先关闭权限验证，方便测试）
 
 ```shell
-ab -c 100 -n 1000 http://gw.shinezone.net.cn/devops/api/v1.0/job/
+ab -c 100 -n 1000 http://gw.shinezone.net.cn/cron/v1/cron/log/
 ```
-
+可以看到,差不多有21个请求是成功的
 ```bash
-Document Path:          /devops/api/v1.0/job/
-Document Length:        245 bytes
+Document Path:          /cron/v1/cron/log/
+Document Length:        11852 bytes
 
 Concurrency Level:      100
-Time taken for tests:   2.810 seconds
+Time taken for tests:   3.982 seconds
 Complete requests:      1000
-Failed requests:        985
+Failed requests:        979
 ```
 
-可以看到,差不多有15个请求是成功的
+再试试 并发5个请求 如下:
+```shell
+ab -c 5 -n 1000 http://gw.shinezone.net.cn/cron/v1/cron/log/ 
+```
+```bash
+Document Path:          /cron/v1/cron/log/
+Document Length:        11852 bytes
+
+Concurrency Level:      5
+Time taken for tests:   199.811 seconds
+Complete requests:      1000
+Failed requests:        0
+Write errors:           0
+```
 
 
 

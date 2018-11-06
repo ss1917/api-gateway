@@ -14,7 +14,7 @@ redis_config = {
     --host = '172.16.0.121',
     port = 6379,
     auth_pwd = '123456',
-    db = 7,
+    db = 8,
     alive_time = 3600 * 24 * 7,
     channel = 'gw'
 }
