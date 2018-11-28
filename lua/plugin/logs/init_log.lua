@@ -11,7 +11,7 @@ function _M.send()
     local data = {
         username = user_info.username,
         nickname = user_info.nickname,
-        login_ip = ngx.var.remote_addr,
+        login_ip = ngx.var.proxy_add_x_forwarded_for,
         method = method,
         uri = ngx.var.request_uri,
         data = postargs,
