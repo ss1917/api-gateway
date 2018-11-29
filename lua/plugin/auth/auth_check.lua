@@ -9,8 +9,9 @@ function _M.check()
     local auth_key = ngx.var.cookie_auth_key
 
     if auth_key == nil then
-        ngx.var.login_url = login_url
-        ngx.exec("/login")
+        ngx.exit(ngx.HTTP_UNAUTHORIZED)
+        -- ngx.var.login_url = login_url
+        -- ngx.exec("/login")
         return
     end
 
@@ -39,8 +40,6 @@ function _M.check()
         local is_permission = my_verify.get_verify(user_id, uri, method)
         if is_permission ~= true then
             my_verify.write_permission(user_id)
-            -- ngx.say('403')
-            -- ngx.exit(403)
             ngx.exit(ngx.HTTP_FORBIDDEN)
             return
         end
