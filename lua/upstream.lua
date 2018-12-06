@@ -1,5 +1,6 @@
 local tools = require "tools"
-local host = ngx.var.http_host
+--local host = ngx.var.http_host
+local host = gw_domain_name
 local uri = ngx.var.uri
 
 local _M = {}
@@ -14,6 +15,7 @@ function _M.set()
 	local svc_code = url_path_list[1]
 
 	local default_upstream = 'None'
+	ngx.log(ngx.ERR, "host-------->" ..host)
 	if rewrite_conf[host] ~= nil then
 		local data = {}
 		local key_data = {}
@@ -37,6 +39,7 @@ function _M.set()
 			ngx.log(ngx.ERR, "default_upstream----> "..default_upstream)
 		end
 	end
+
 	if default_upstream ~= "None" then
 		ngx.var.my_upstream = default_upstream
 		table.remove(url_path_list,1)

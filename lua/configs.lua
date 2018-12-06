@@ -44,9 +44,15 @@ limit_conf = {
 }
 
 --upstream匹配规则
+gw_domain_name = 'gw.shinezone.net.cn'
+
 rewrite_conf = {
-    ['gw.shinezone.net.cn'] = {
+    [gw_domain_name] = {
         rewrite_urls = {
+            {
+                uri = "/cmdb",
+                rewrite_upstream = "172.16.80.12:8000"
+            },
             {
                 uri = "/task",
                 rewrite_upstream = "172.16.0.223:8900"
