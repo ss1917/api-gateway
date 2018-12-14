@@ -26,7 +26,7 @@ ln -s /usr/local/openresty/bin/resty /usr/bin/resty
 ```bash
 # yum部署
 yum install yum-utils
-yum-config-manager --add-repo
+yum-config-manager --add-repo https://openresty.org/package/centos/openresty.repo
 yum install openresty
 yum install openresty-resty
 ```
@@ -60,9 +60,19 @@ yum install openresty-resty
 注册示例如下：
 
 ```lua
+gw_domain_name = 'gw.opendevops.cn'
+
 rewrite_conf = {
-    ['gw.shinezone.net.cn'] = {
+    [gw_domain_name] = {
         rewrite_urls = {
+            {
+                uri = "/cmdb",
+                rewrite_upstream = "172.16.80.12:8000"
+            },
+            {
+                uri = "/task",
+                rewrite_upstream = "172.16.0.223:8900"
+            },
             {
                 uri = "/cron",
                 rewrite_upstream = "172.16.0.223:9900"
