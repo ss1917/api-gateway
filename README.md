@@ -114,18 +114,31 @@ accounts 做过处理 不用经过鉴权
 
 在这里来测试 devops服务的job接口
 
-​	原接口地址：http://devops.shinezone.net.cn/xxxx/
+​	原接口地址：http://mg.opendevops.cn/xxxx/
 
-​	现接口地址：http://gw.shinezone.net.cn/devops/xxxx/
+​	现接口地址：http://gw.opendevops.cn/mg/xxxx/
 
 测试：
 
-​        首次访问 http://gw.shinezone.net.cn/devops/xxxx/ 跳转到login页面登录
-
-​        登录成功,再次访问进行uri鉴权,鉴权成功则如下
-
-![img](images/01.png)
-
+​        首次访问 http://gw.opendevops.cn/mg/xxxx/  会返回 401错误，表示未登路
+        http://gw.opendevops.cn/accounts/login/
+        使用post 模拟登录 
+        ```
+        {
+	        "username":"ss",
+	        "password":"shenshuo",
+	        "dynamic":"010073"
+        }
+        ```
+​        登录成功,再次访问进行uri鉴权,鉴权成功则如下:
+        http://gw.opendevops.cn/mg/v2/sysconfig/settings/STORAGE/
+        ```
+        {
+            "code": 0,
+            "msg": "获取配置成功",
+            "data": {}
+        }
+        ```
 
 
 # 四、API限速
@@ -144,7 +157,7 @@ limit_conf = {
 测试：（最好先关闭权限验证，方便测试）
 
 ```shell
-ab -c 100 -n 1000 http://gw.shinezone.net.cn/cron/v1/cron/log/
+ab -c 100 -n 1000 http://gw.opendevops.cn/cron/v1/cron/log/
 ```
 可以看到,差不多有21个请求是成功的
 ```bash
@@ -159,7 +172,7 @@ Failed requests:        979
 
 再试试 并发5个请求 如下:
 ```shell
-ab -c 5 -n 1000 http://gw.shinezone.net.cn/cron/v1/cron/log/ 
+ab -c 5 -n 1000 http://gw.opendevops.cn/cron/v1/cron/log/ 
 ```
 ```bash
 Document Path:          /cron/v1/cron/log/
