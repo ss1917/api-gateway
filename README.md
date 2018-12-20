@@ -7,7 +7,9 @@ API网关系统,是基于openresty + Lua开发的一套API网关系统,主要功
 
 - 日志记录
 
+- 白名单 （未完成）
 
+- 熔断 （未完成）
 
 # 一、服务部署
 #### openresty 编译安装
@@ -44,7 +46,7 @@ yum install openresty-resty
    - token_secret 为你的令牌的密钥 和登录JWT 服务的key一致
    - rewrite_cache_url 刷新权限到redis接口  
    - rewrite_cache_token  为获取权限的令牌
-   - login_url 当token 无效或者过期 跳转的登录页面
+   #### - login_url 当token 无效或者过期 跳转的登录页面
    - limit_conf 并发 限制默认即可 如有需求下面有详细介绍
    - rewrite_conf 注册API 下面有详解
           
@@ -58,7 +60,29 @@ yum install openresty-resty
 ​	b、POST注册接口(暂无)
 
 注册示例如下：
+上级nginx 配置示例
+```
+server {
+        listen      80;
+        server_name demo.opendevops.cn
+        access_log /var/log/nginx/ops-demo_access.log;
+        error_log  /var/log/nginx/ops-demo_error.log;
 
+        location / {
+                    root /var/www/admin-front;
+                    index index.html index.htm;
+                    try_files $uri $uri/ /index.html;
+                    }
+        location /api {
+                add_header 'Access-Control-Allow-Origin' '*';
+                proxy_pass http://gw.opendevops.cn;
+        }
+        location ~ /(.svn|.git|admin|manage|.sh|.bash)$ {
+            return 403;
+        }
+    }
+```
+- 通过 api代理到api网关， 网关会把URI的第一位删除, 第二位是服务标示，之后的才是真正后端的API的URI地址，当然权限还是会从服务标示开始匹配
 ```lua
 gw_domain_name = 'gw.opendevops.cn'
 

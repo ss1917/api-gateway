@@ -1,12 +1,12 @@
 local tools = require "tools"
 --local host = ngx.var.http_host
 local host = gw_domain_name
-local uri = ngx.var.uri
+--local uri = ngx.var.uri
 
 local _M = {}
-function _M.set()
-
-	--	ngx.log(ngx.ERR, "uri-------->"..uri)
+function _M.set(real_new_uri)
+	local uri = real_new_uri
+	ngx.log(ngx.ERR, "uri-------->"..uri)
 	if uri == '/nginx-logo.png' or uri == '/poweredby.png' then
 		return
 	end
@@ -44,8 +44,11 @@ function _M.set()
 		ngx.var.my_upstream = default_upstream
 		table.remove(url_path_list,1)
 		local new_uri = tools.list_to_str(url_path_list,'/')
-		ngx.log(ngx.ERR,'new_uri-------->',new_uri)
-		ngx.req.set_uri(new_uri, false)
+		local real_url_path_list = tools.split(new_uri, '?')
+		local real_uri = real_url_path_list[1]
+		ngx.log(ngx.ERR,'real_uri-------->',real_uri)
+		--		ngx.log(ngx.ERR,'new_uri-------->',new_uri)
+		ngx.req.set_uri(real_uri, false)
 	else
 		return ngx.exit(404)
 	end

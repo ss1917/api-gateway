@@ -4,7 +4,7 @@ local user_info = ngx.shared.user_info
 
 local _M = {}
 
-function _M.check()
+function _M.check(real_new_uri)
     -- 获取cook
     local auth_key = ngx.var.cookie_auth_key
 
@@ -26,7 +26,9 @@ function _M.check()
     user_info['nickname'] = load_token.payload.data.nickname
 
     -- 获取当前uri
-    local uri = ngx.var.request_uri
+    local uri = real_new_uri
+    --    local uri = ngx.var.request_uri
+    ngx.log(ngx.ERR,'auth_check_uri--->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', uri)
     -- ngx.say('uri---> ',uri)
 
     -- 获取请求方法
