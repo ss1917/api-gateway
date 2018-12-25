@@ -6,7 +6,7 @@ local host = gw_domain_name
 local _M = {}
 function _M.set(real_new_uri)
 	local uri = real_new_uri
-	ngx.log(ngx.ERR, "uri-------->"..uri)
+	--	ngx.log(ngx.ERR, "uri-------->"..uri)
 	if uri == '/nginx-logo.png' or uri == '/poweredby.png' then
 		return
 	end
@@ -15,7 +15,6 @@ function _M.set(real_new_uri)
 	local svc_code = url_path_list[1]
 
 	local default_upstream = 'None'
-	ngx.log(ngx.ERR, "host-------->" ..host)
 	if rewrite_conf[host] ~= nil then
 		local data = {}
 		local key_data = {}
@@ -36,7 +35,7 @@ function _M.set(real_new_uri)
 			table.sort(key_data)	--排序
 			local new_key = key_data[#key_data]	--取最后一个key
 			default_upstream = data[new_key]
-			ngx.log(ngx.ERR, "default_upstream----> "..default_upstream)
+			--			ngx.log(ngx.ERR, "default_upstream----> "..default_upstream)
 		end
 	end
 

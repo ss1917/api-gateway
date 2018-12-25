@@ -28,7 +28,7 @@ function _M.check(real_new_uri)
     -- 获取当前uri
     local uri = real_new_uri
     --    local uri = ngx.var.request_uri
-    ngx.log(ngx.ERR,'auth_check_uri--->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', uri)
+    --    ngx.log(ngx.ERR,'auth_check_uri--->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', uri)
     -- ngx.say('uri---> ',uri)
 
     -- 获取请求方法
