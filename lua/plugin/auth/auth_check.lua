@@ -41,7 +41,7 @@ function _M.check(real_new_uri)
         my_verify.write_verify(user_id)
         local is_permission = my_verify.get_verify(user_id, uri, method)
         if is_permission ~= true then
-            my_verify.write_permission(user_id)
+            my_verify.write_verify(user_id)
             ngx.exit(ngx.HTTP_FORBIDDEN)
             return
         end
