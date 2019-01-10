@@ -31,11 +31,8 @@ token_secret = "pXFb4i%*834gfdh96(3df&%18iodGq4ODQyMzc4lz7yI6ImF1dG"
 logs_file = '/var/log/gw.log'
 
 --刷新权限到redis接口
-rewrite_cache_url = 'http://172.16.0.223:9800/v2/accounts/verify/'
+rewrite_cache_url = 'http://mg.opendevops.cn:8010/v2/accounts/verify/'
 rewrite_cache_token = '8b888a62-3edb-4920-b446-697a472b4001'
-
---Login URL
---login_url = '172.16.80.138:8080/#/login/'
 
 --并发限流配置
 limit_conf = {
@@ -44,30 +41,34 @@ limit_conf = {
 }
 
 --upstream匹配规则
-gw_domain_name = 'gw.shinezone.net.cn'
+gw_domain_name = 'gw.opendevops.cn'
 
 rewrite_conf = {
     [gw_domain_name] = {
         rewrite_urls = {
             {
                 uri = "/cmdb",
-                rewrite_upstream = "172.16.80.12:8000"
+                rewrite_upstream = "cmdb.opendevops.cn:8002"
+            },
+            {
+                uri = "/k8s",
+                rewrite_upstream = "k8s.opendevops.cn:8001"
             },
             {
                 uri = "/task",
-                rewrite_upstream = "172.16.0.223:8900"
+                rewrite_upstream = "task.opendevops.cn:8020"
             },
             {
                 uri = "/cron",
-                rewrite_upstream = "172.16.0.223:9900"
+                rewrite_upstream = "10.2.2.236:9900"
             },
             {
                 uri = "/mg",
-                rewrite_upstream = "172.16.0.223:9800"
+                rewrite_upstream = "mg.opendevops.cn:8010"
             },
             {
                 uri = "/accounts",
-                rewrite_upstream = "172.16.0.223:9800"
+                rewrite_upstream = "mg.opendevops.cn:8010"
             },
         }
     }
