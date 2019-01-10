@@ -40,6 +40,7 @@ yum install openresty-resty
 # 二、 修改配置 
    ##### 文件 /usr/local/openresty/nginx/conf/nginx.conf
    -  修改 resolver 172.16.0.21; 为resolver DNS服务器。
+   ##### 文件 /usr/local/openresty/nginx/conf/conf.d/gw.conf
    -  修改 lua_code_cache on; 线上环境设置为on
    -  修改 server_name  为你的网关域名
    ##### 文件 /usr/local/openresty/nginx/lua/configs.lua
