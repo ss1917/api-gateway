@@ -26,6 +26,13 @@ function decode_auth_token(auth_token)
     return load_token
 end
 
+function decode_auth_token_verify(auth_token)
+    local load_token = jwt:verify(
+        token_secret,
+        auth_token
+    )
+    return load_token
+end
 --local jwt_token = encode_auth_token(token_secret,1)
 --local load_token = decode_auth_token('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MzUxOTMwMzksIm5iZiI6MTUzNTEwNjYxOSwiaWF0IjoxNTM1MTA2NjI5LCJpc3MiOiJhdXRoOiBzcyIsInN1YiI6Im15IHRva2VuIiwiaWQiOiIxNTYxODcxODA2MCIsImRhdGEiOnsidXNlcl9pZCI6IjE0IiwidXNlcm5hbWUiOiJ5YW5nbWluZ3dlaSIsIm5pY2tuYW1lIjoiXHU2NzY4XHU5NGVkXHU1YTAxIn19.GucrQnWIVsWL-0nTqef5eLFAVzBRjsuUp_L9oasRGRQ')
 --ngx.say(json.encode(load_token))

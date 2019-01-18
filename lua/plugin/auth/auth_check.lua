@@ -10,14 +10,18 @@ function _M.check(real_new_uri)
 
     if auth_key == nil then
         ngx.exit(ngx.HTTP_UNAUTHORIZED)
-        -- ngx.var.login_url = login_url
-        -- ngx.exec("/login")
         return
     end
 
     -- 解密auth_key
-    local load_token = jwt.decode_auth_token(auth_key)
+    local load_token = jwt.decode_auth_token_verify(auth_key)
     -- ngx.log(ngx.ERR,'load_token--->',json.encode(load_token))
+
+    -- 鉴定token是否正常
+    if load_token.verified == false then
+        ngx.log(ngx.ERR, "Invalid token: ".. load_token.reason)
+        ngx.exit(ngx.HTTP_UNAUTHORIZED)
+    end
 
     -- 获得用户id
     local user_id = load_token.payload.data.user_id
