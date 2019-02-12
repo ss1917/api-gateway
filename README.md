@@ -73,8 +73,11 @@ server {
                     root /var/www/admin-front;
                     index index.html index.htm;
                     try_files $uri $uri/ /index.html;
-                    }
+                    expires 3d;
+        }
         location /api {
+                proxy_redirect off;
+                proxy_read_timeout 600;
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection "upgrade";
