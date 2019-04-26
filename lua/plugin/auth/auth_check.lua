@@ -9,9 +9,31 @@ function _M.check(real_new_uri)
     local auth_key = ngx.var.cookie_auth_key
 
     if auth_key == nil then
+        local arg = ngx.req.get_uri_args()
+        if arg ~= nil then
+            for k,v in pairs(arg) do
+                if k == 'auth_key' then
+                    auth_key = v
+                end
+            end
+        else
+            ngx.exit(ngx.HTTP_UNAUTHORIZED)
+            return
+        end
+    end
+
+    if auth_key == nil then
         ngx.exit(ngx.HTTP_UNAUTHORIZED)
         return
     end
+
+--
+--    local auth_key = ngx.var.cookie_auth_key
+--
+--    if auth_key == nil then
+--        ngx.exit(ngx.HTTP_UNAUTHORIZED)
+--        return
+--    end
 
     -- 解密auth_key
     local load_token = jwt.decode_auth_token_verify(auth_key)
