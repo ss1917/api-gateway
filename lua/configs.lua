@@ -47,6 +47,22 @@ rewrite_conf = {
     [gw_domain_name] = {
         rewrite_urls = {
             {
+                uri = "/dns",
+                rewrite_upstream = "dns.opendevops.cn:8060"
+            },
+            {
+                uri = "/cmdb2",
+                rewrite_upstream = "cmdb2.opendevops.cn:8050"
+            },
+            {
+                uri = "/tools",
+                rewrite_upstream = "tools.opendevops.cn:8040"
+            },
+            {
+                uri = "/kerrigan",
+                rewrite_upstream = "kerrigan.opendevops.cn:8030"
+            },
+            {
                 uri = "/cmdb",
                 rewrite_upstream = "cmdb.opendevops.cn:8002"
             },
