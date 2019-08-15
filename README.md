@@ -248,17 +248,22 @@ Reading messages... (press Ctrl-C to quit)
 ```
 
 # docker 部署
+
 **配置修改参考上述内容**
+
 ```
 #删除前端的配置文件
 mv conf/conf.d/demo.conf  conf/conf.d/demo.conf-bak
+
 #bulid镜像
 docker build . -t gateway_image
+
 #启动
 docker-compose up -d
 ```
-**使用docker部署启动之后端口为8888，防止单机部署造成端口冲突，如果想修改端口请修改`docker-compose.yml`文件**
-**默认域名：`http://gw.opendevops.cn:8888` 如果需要修改域名请修改`conf/conf.d/gw.conf`文件**
+**使用docker部署启动之后端口为8888，防止单机部署造成端口冲突，如果想修改端口请修改`docker-compose.yml`文件。**
+
+**默认域名：`http://gw.opendevops.cn:8888` 如果需要修改域名请修改`conf/conf.d/gw.conf`文件。**
 
 ## License
 
