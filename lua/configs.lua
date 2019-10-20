@@ -76,7 +76,7 @@ rewrite_conf = {
             },
             {
                 uri = "/cron",
-                rewrite_upstream = "10.2.2.236:9900"
+                rewrite_upstream = "cron.opendevops.cn:9900"
             },
             {
                 uri = "/mg",
