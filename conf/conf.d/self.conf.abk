@@ -1,9 +1,8 @@
 server {
         listen       80;
-        server_name demo.opendevops.cn;
-        access_log /var/log/nginx/f_access.log;
-        error_log  /var/log/nginx/f_error.log;
-        root /var/www/codo;
+        server_name self-gateway.opendevops.cn;
+        access_log /usr/local/openresty/nginx/logs/self-gateway-access.log;
+        error_log  /usr/local/openresty/nginx/logs/self-gateway-error.log;
 
         location / {
                     root /var/www/codo;
@@ -19,7 +18,7 @@ server {
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
                 add_header 'Access-Control-Allow-Origin' '*';
-                proxy_pass http://gw.opendevops.cn;
+                proxy_pass http://codo-gateway;
         }
 
         location ~ /(.svn|.git|admin|manage|.sh|.bash)$ {
