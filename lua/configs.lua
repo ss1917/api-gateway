@@ -51,15 +51,15 @@ rewrite_conf = {
         rewrite_urls = {
             {
                 uri = "/dns",
-                rewrite_upstream = "codo-dns:8060"
+                rewrite_upstream = "codo-dns"
             },
             {
                 uri = "/cmdb2",
-                rewrite_upstream = "codo-cmdb2:8050"
+                rewrite_upstream = "codo-cmdb"
             },
             {
                 uri = "/tools",
-                rewrite_upstream = "codo-tools:8040"
+                rewrite_upstream = "codo-tools"
             },
             {
                 uri = "/kerrigan",
@@ -71,15 +71,15 @@ rewrite_conf = {
             },
             {
                 uri = "/k8s",
-                rewrite_upstream = "codo-k8s:8001"
+                rewrite_upstream = "codo-k8s"
             },
             {
                 uri = "/task",
-                rewrite_upstream = "codo-task:8020"
+                rewrite_upstream = "codo-task"
             },
             {
                 uri = "/cron",
-                rewrite_upstream = "codo-cron:9900"
+                rewrite_upstream = "codo-cron"
             },
             {
                 uri = "/mg",

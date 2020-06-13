@@ -1,9 +1,0 @@
-codo-gateway:
-  restart: unless-stopped
-  image: registry.cn-hangzhou.aliyuncs.com/sourcegarden/opendevops-gateway:alpine-0.3.0
-  volumes:
-    - /var/log/:/var/log/
-    - /usr/local/openresty/nginx/:/usr/local/openresty/nginx/
-    - /sys/fs/cgroup:/sys/fs/cgroup
-  ports:
-    - "8888:80"
