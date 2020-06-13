@@ -35,7 +35,7 @@ token_secret = '${token_secret}'
 logs_file = '/usr/local/openresty/nginx/logs/gateway-lua.log'
 
 --刷新权限到redis接口
-rewrite_cache_url = 'http://"${mg_domain}"/v2/accounts/verify/'
+rewrite_cache_url = 'http://${mg_domain}/v2/accounts/verify/'
 -- 注意：rewrite_cache_token要和codo-admin里面的secret_key保持一致
 rewrite_cache_token = '${secret_key}'
 
