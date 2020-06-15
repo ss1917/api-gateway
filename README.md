@@ -11,8 +11,13 @@ API网关系统,是基于openresty + Lua开发的一套API网关系统,主要功
 
 - 熔断 （未完成）
 
-# 一、服务部署
-#### openresty 编译安装
+
+
+# 一、部署
+
+## 传统部署
+
+#### 1. openresty 编译安装
 ```
 wget https://openresty.org/download/openresty-1.13.6.2.tar.gz
 tar zxf openresty-1.13.6.2.tar.gz && cd openresty-1.13.6.2
@@ -24,40 +29,40 @@ ln -s /usr/local/openresty-1.13.6.2/ /usr/local/openresty
 ln -s /usr/local/openresty/bin/resty /usr/bin/resty
 ```
 
-####  yum安装
+**或者yum安装openresty**
+
 ```bash
-# yum部署
 yum install yum-utils
 yum-config-manager --add-repo https://openresty.org/package/centos/openresty.repo
 yum install openresty
 yum install openresty-resty
 ```
-#####  代码部署
+####  2. 代码部署
 ```bash
-\cp -arp api-gateway/* /usr/local/openresty/nginx/
+cp -arp api-gateway/* /usr/local/openresty/nginx/
 ```
 
-# 二、 修改配置 
-   ##### 文件 /usr/local/openresty/nginx/conf/nginx.conf
-   -  修改 resolver 172.16.0.21; 为resolver DNS服务器。
-   ##### 文件 /usr/local/openresty/nginx/conf/conf.d/gw.conf
-   -  修改 lua_code_cache on; 线上环境设置为on
-   -  修改 server_name  为你的网关域名
-   ##### 文件 /usr/local/openresty/nginx/lua/configs.lua
-   - token_secret 为你的令牌的密钥 和登录JWT 服务的key一致
-   - rewrite_cache_url 刷新权限到redis接口  
-   - rewrite_cache_token  为获取权限的令牌
-   #### - login_url 当token 无效或者过期 跳转的登录页面
-   - limit_conf 并发 限制默认即可 如有需求下面有详细介绍
-   - rewrite_conf 注册API 下面有详解
-          
+#### 3.修改配置文件
+
+**文件 /usr/local/openresty/nginx/conf/nginx.conf**
+	-  修改 resolver 172.16.0.21; 为resolver DNS服务器。
+
+**文件 /usr/local/openresty/nginx/conf/conf.d/gw.conf**
+	- 修改 lua_code_cache on; 线上环境设置为on
+	- 修改 server_name  为你的网关域名
+
+**文件 /usr/local/openresty/nginx/lua/configs.lua**
+	- token_secret 为你的令牌的密钥 和登录JWT 服务的key一致
+	- rewrite_cache_url 刷新权限到redis接口  
+	- rewrite_cache_token  为获取权限的令牌
+	- login_url 当token 无效或者过期 跳转的登录页面
+	- limit_conf 并发 限制默认即可 如有需求下面有详细介绍
+	- rewrite_conf 注册API 下面有详解
 
 
-# 三、使用配置,注册API
+#### 4. 使用配置,注册API
 > 要接入API网关系统，则要先进行注册，注册方式如下：
-
 ​	a、配置文件configs.lua中的rewrite_conf
-
 ​	b、POST注册接口(暂无)
 
 注册示例如下：
@@ -130,7 +135,24 @@ accounts 做过处理 不用经过鉴权
 
 
 
-# 四、API鉴权权限
+## docker 部署
+
+**配置修改参考上述内容**
+
+```
+#bulid镜像
+docker build -t gateway_image .
+
+#启动
+#注意：环境变量文件env.sh 请从opendevops项目里获取
+docker run -it -d --name codo-gateway --env-file env.sh -p 8888:80 
+```
+
+**使用docker部署启动之后端口为8888，防止单机部署造成端口冲突。你可以改为任意一个与本机不冲突的端口**
+
+> 环境变量文件包含了所有项目启动所需要的变量，单启动该容器只为测试该应用是否正常，若您想使用和测试完整的项目，建议通过opendevops项目的docker-compose文件来启动一个完整的项目。
+
+# 二、API鉴权权限
 
 在configs.lua文件中配置redis信息和刷新redis权限接口信息，此信息由【权限系统】提供
 
@@ -154,27 +176,27 @@ accounts 做过处理 不用经过鉴权
 测试：
 
 ​        首次访问 http://gw.opendevops.cn/mg/xxxx/  会返回 401错误，表示未登路
-        http://gw.opendevops.cn/accounts/login/
-        使用post 模拟登录 
-        ```
-        {
-	        "username":"ss",
-	        "password":"shenshuo",
-	        "dynamic":"010073"
-        }
-        ```
+​        http://gw.opendevops.cn/accounts/login/
+​        使用post 模拟登录 
+​        ```
+​        {
+​	        "username":"ss",
+​	        "password":"shenshuo",
+​	        "dynamic":"010073"
+​        }
+​        ```
 ​        登录成功,再次访问进行uri鉴权,鉴权成功则如下:
-        http://gw.opendevops.cn/mg/v2/sysconfig/settings/STORAGE/
-        ```
-        {
-            "code": 0,
-            "msg": "获取配置成功",
-            "data": {}
-        }
-        ```
+​        http://gw.opendevops.cn/mg/v2/sysconfig/settings/STORAGE/
+​        ```
+​        {
+​            "code": 0,
+​            "msg": "获取配置成功",
+​            "data": {}
+​        }
+​        ```
 
 
-# 四、API限速
+# 三、API限速
 
 在configs.lua文件中配置limit,配置示例如下
 
@@ -220,7 +242,7 @@ Write errors:           0
 
 
 
-# 五、日志记录
+# 四、日志记录
 
 在configs.lua文件中配置log地址及redis channel
 
@@ -247,23 +269,7 @@ Reading messages... (press Ctrl-C to quit)
 3) "{\"time\":\"2018-09-19 10:48:52\",\"uri\":\"\\/devops\\/api\\/v1.0\\/job\\/\",\"login_ip\":\"172.16.80.12\",\"method\":\"POST\"}"
 ```
 
-# docker 部署
 
-**配置修改参考上述内容**
-
-```
-#删除前端的配置文件
-mv conf/conf.d/demo.conf  conf/conf.d/demo.conf-bak
-
-#bulid镜像
-docker build . -t gateway_image
-
-#启动
-docker-compose up -d
-```
-**使用docker部署启动之后端口为8888，防止单机部署造成端口冲突，如果想修改端口请修改`docker-compose.yml`文件。**
-
-**默认域名：`http://gw.opendevops.cn:8888` 如果需要修改域名请修改`conf/conf.d/gw.conf`文件。**
 
 ## License
 
