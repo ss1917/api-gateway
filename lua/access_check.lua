@@ -11,7 +11,7 @@ local url_path_list = tools.split(ngx.var.request_uri, '/')
 local svc_code = url_path_list[2] -- 去第二位
 --
 table.remove(url_path_list,1)
-real_new_uri = tools.list_to_str(url_path_list,'/')
+local real_new_uri = tools.list_to_str(url_path_list,'/')
 --
 -- 不用鉴权的URI
 if svc_code == 'accounts' or svc_code == 'favicon.ico' then
