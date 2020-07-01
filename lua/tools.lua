@@ -1,11 +1,25 @@
 module("tools", package.seeall)
+local ngx_re = require "ngx.re"
+
 function split(s, p)
     -- 字符串切割
     local rt = {}
-    string.gsub(s, '[^' .. p .. ']+', function(w)
-        rt[#rt + 1] = w
-        --table.insert(rt, w)
-    end )
+
+    -- 对问号分割做转义
+    if p == "?" then
+        p = "\\?"
+    end
+    
+    local res = ngx_re.split(s, p)
+    if res then
+        if res[1] == "" then
+            table.remove(res, 1)
+        end
+        rt = res
+    else
+        table.insert(rt, 1, s)
+    end
+
     return rt
 end
 
