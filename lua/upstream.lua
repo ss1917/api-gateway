@@ -21,7 +21,7 @@ function _M.set(real_new_uri)
 		for i, elem in ipairs(rewrite_conf[host]['rewrite_urls']) do
 			--local ret = tools.match(uri,elem['uri'])
 			--if ret then
-			local ret = tools.match('/'..svc_code,elem['uri'])
+			-- local ret = tools.match('/'..svc_code,elem['uri'])
 			if '/'..svc_code == elem['uri'] then
 				data [string.len(elem['uri'])] = elem['rewrite_upstream']
 			end
