@@ -8,7 +8,7 @@ limit_req.incoming() --限速,限制每秒请求数
 
 -- 获取访问URI
 local url_path_list = tools.split(ngx.var.request_uri, '/')
-local svc_code = url_path_list[2] -- 去第二位
+local svc_code = url_path_list[2] -- 取第二位
 --
 table.remove(url_path_list,1)
 local real_new_uri = tools.list_to_str(url_path_list,'/')

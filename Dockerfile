@@ -1,14 +1,14 @@
-FROM openresty/openresty:1.15.8.1-1-centos
-
-MAINTAINER "shenshuo<191715030@qq.com>"
-
-ENV LANG en_US.UTF-8
-# 同步时间
+FROM openresty/openresty:1.15.8.3-2-centos
+ENV LANG=en_US.UTF-8
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+RUN yum install epel-release -y && yum install -y supervisor && yum clean all -y
+
 COPY . /usr/local/openresty/nginx/
-VOLUME /var/log/
-VOLUME /usr/local/openresty/nginx/logs/
-EXPOSE 80
-CMD ["/usr/bin/openresty", "-g", "daemon off;"]
+RUN  mv  /usr/local/openresty/nginx/supervisor_ops.conf  /etc/supervisord.conf
+
+EXPOSE 80 443
+
+CMD ["/usr/bin/supervisord"]
+#CMD ["/usr/bin/openresty", "-g", "daemon off;"]
